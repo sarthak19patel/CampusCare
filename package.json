@@ -1,0 +1,14 @@
+{
+  "name": "campuscare-brand-baker",
+  "version": "1.0.0",
+  "description": "Tool to sample gla-logo.webp and bake brand colors into styles/premium.css",
+  "main": "tools/bake-brand.js",
+  "scripts": {
+    "bake-brand": "node tools/bake-brand.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}

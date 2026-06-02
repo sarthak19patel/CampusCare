@@ -1,0 +1,662 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusCare</title>
+  <meta name="description" content="CampusCare is a modern university student support portal for career guidance, mental health, complaints, mentoring, and campus resources." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles/premium.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            campus: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a'
+            }
+          },
+          boxShadow: {
+            soft: '0 18px 45px rgba(15, 23, 42, 0.10)',
+            glow: '0 12px 30px rgba(37, 99, 235, 0.24)'
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          },
+          keyframes: {
+            floaty: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' }
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(16px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          },
+          animation: {
+            floaty: 'floaty 6s ease-in-out infinite',
+            fadeUp: 'fadeUp 0.7s ease-out both'
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(96, 165, 250, 0.18), transparent 24%),
+        linear-gradient(180deg, #f8fbff 0%, #eff6ff 42%, #f8fafc 100%);
+      color: #0f172a;
+    }
+
+    ::selection {
+      background: rgba(37, 99, 235, 0.2);
+    }
+
+    .glass {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .section-heading::after {
+      content: '';
+      display: block;
+      width: 78px;
+      height: 4px;
+      border-radius: 999px;
+      margin-top: 14px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+    }
+
+    .card-hover {
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+      border-color: rgba(37, 99, 235, 0.22);
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 160ms ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.45);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const menuItems = [
+      { label: 'Home', href: '#home' },
+      { label: 'Services', href: '#services' },
+      { label: 'Fresher Zone', href: '#fresher-zone' },
+      { label: 'Resources', href: '#resources' },
+      { label: 'Forum', href: '#forum' },
+      { label: 'Contact Us', href: '#contact' },
+    ];
+
+    const quickHelpItems = [
+      { title: 'Career Guidance', icon: 'briefcase', description: 'Plan your next step with career advisors and industry-ready guidance.' },
+      { title: 'Mental Health Support', icon: 'heart', description: 'Find a safe, supportive space for wellbeing and emotional care.' },
+      { title: 'Raise a Complaint', icon: 'alert', description: 'Submit issues quickly and track resolution with transparency.' },
+      { title: 'Fresher Help Center', icon: 'spark', description: 'Get started on campus with onboarding, tips, and essential links.' },
+      { title: 'Mentor Connect', icon: 'mentor', description: 'Join with mentors for academic, personal, and career support.' },
+      { title: 'Emergency Help', icon: 'shield', description: 'Reach urgent support channels when you need immediate assistance.' },
+    ];
+
+    const services = [
+      'Career Guidance',
+      'Mental Health Support',
+      'Complaint Management',
+      'Fresher Help Center',
+      'Mentor Connect',
+      'Student Community Forum',
+    ];
+
+    const stats = [
+      { value: '1500+', label: 'Students Helped' },
+      { value: '500+', label: 'Queries Solved' },
+      { value: '95%', label: 'Complaint Resolution' },
+      { value: '100+', label: 'Active Mentors' },
+    ];
+
+    const announcements = [
+      'Latest Workshop: Resume Building and Interview Skills',
+      'Placement Drive opening next week for final-year students',
+      'Internship Opportunities posted in the career portal',
+      'Campus update: new support sessions added for freshers',
+    ];
+
+    const resources = [
+      'Academic Calendar',
+      'Placement Portal',
+      'Exam Timetable',
+      'Scholarship Information',
+    ];
+
+    const Icon = ({ name }) => {
+      const common = 'w-6 h-6 text-white';
+      switch (name) {
+        case 'briefcase':
+          return (
+            <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="7" width="18" height="14" rx="3" />
+              <path d="M9 7V6a3 3 0 0 1 6 0v1" />
+              <path d="M3 13h18" />
+            </svg>
+          );
+        case 'heart':
+          return (
+            <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" />
+            </svg>
+          );
+        case 'alert':
+          return (
+            <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M10.3 4.2 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3l-7.5-12.8a2 2 0 0 0-3.4 0Z" />
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+            </svg>
+          );
+        case 'spark':
+          return (
+            <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9L12 2Z" />
+            </svg>
+          );
+        case 'mentor':
+          return (
+            <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M16 11a4 4 0 1 0-8 0" />
+              <path d="M12 14v7" />
+              <path d="M5 19c1.6-2.8 4.1-4 7-4s5.4 1.2 7 4" />
+            </svg>
+          );
+        case 'shield':
+          return (
+            <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+              <path d="M12 8v5" />
+              <path d="M12 17h.01" />
+            </svg>
+          );
+        case 'search':
+          return (
+            <svg className="w-5 h-5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          );
+        case 'calendar':
+          return (
+            <svg className="w-5 h-5 text-campus-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="17" rx="3" />
+              <path d="M8 2v4" />
+              <path d="M16 2v4" />
+              <path d="M3 10h18" />
+            </svg>
+          );
+        case 'portal':
+          return (
+            <svg className="w-5 h-5 text-campus-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M4 19a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2" />
+              <rect x="5" y="3" width="14" height="14" rx="2" />
+            </svg>
+          );
+        case 'exam':
+          return (
+            <svg className="w-5 h-5 text-campus-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M7 3h10a2 2 0 0 1 2 2v14l-7-3-7 3V5a2 2 0 0 1 2-2Z" />
+            </svg>
+          );
+        case 'scholarship':
+          return (
+            <svg className="w-5 h-5 text-campus-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="5" />
+              <path d="M8 14l-1 7 5-3 5 3-1-7" />
+            </svg>
+          );
+        case 'chat':
+          return (
+            <svg className="w-5 h-5 text-campus-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M4 5h16v11H7l-3 3V5Z" />
+            </svg>
+          );
+        default:
+          return null;
+      }
+    };
+
+    const SectionTitle = ({ eyebrow, title, description }) => (
+      <div className="mb-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-campus-700 mb-2">{eyebrow}</p>
+        <h2 className="section-heading text-2xl md:text-3xl font-bold text-slate-900">{title}</h2>
+        {description && <p className="mt-4 text-slate-600 max-w-3xl">{description}</p>}
+      </div>
+    );
+
+    const App = () => {
+      const currentYear = new Date().getFullYear();
+
+      return (
+        <div className="min-h-screen font-sans text-slate-900">
+          <header className="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl">
+                <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+              <a href="#home" className="flex items-center gap-3 focus-ring rounded-2xl px-1 py-1" aria-label="CampusCare home">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl brand-gradient text-white shadow-glow">
+                  <span className="text-lg font-extrabold">CC</span>
+                </div>
+                <div>
+                  <div className="text-lg font-extrabold tracking-tight text-slate-900">CampusCare</div>
+                  <div className="text-xs font-medium text-slate-500">We care, we guide, we support</div>
+                </div>
+              </a>
+
+              <nav className="hidden items-center gap-2 xl:flex" aria-label="Primary navigation">
+                {menuItems.map((item) => (
+                  <a key={item.label} href={item.href} className="nav-link focus-ring rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:text-campus-700">
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Search"
+                  className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-campus-200 hover:text-brand"
+                >
+                  <Icon name="search" />
+                </button>
+                <a
+                  href="#login"
+                  className="focus-ring inline-flex items-center justify-center rounded-2xl brand-gradient px-5 py-3 text-sm font-bold text-white shadow-glow transition hover:-translate-y-0.5 hover:shadow-soft"
+                >
+                  Login / Sign Up
+                </a>
+              </div>
+            </div>
+          </header>
+
+          <main id="home">
+            <section className="hero relative overflow-hidden">
+              <div className="hero-bg" aria-hidden="true"></div>
+              <div className="hero-container container">
+                <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+                    <div className="max-w-3xl text-white animate-fadeUp">
+                      <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 shadow-lg backdrop-blur-md">
+                        University Student Support Portal
+                      </span>
+                      <h1 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+                        We&apos;re Here To Help You Every Step of the Way
+                      </h1>
+                      <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">
+                        Get support for your career, mental health, complaints, and connect with mentors.
+                      </p>
+                      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                        <a href="#services" className="focus-ring inline-flex items-center justify-center rounded-2xl bg-white px-6 py-4 font-bold text-brand shadow-soft transition hover:-translate-y-0.5">
+                          Get Support
+                        </a>
+                        <a href="#forum" className="focus-ring inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-6 py-4 font-bold text-white backdrop-blur-md transition hover:bg-white/15">
+                          Raise a Complaint
+                        </a>
+                        <a href="#resources" className="focus-ring inline-flex items-center justify-center rounded-2xl border border-white/20 bg-transparent px-6 py-4 font-bold text-white transition hover:bg-white/10">
+                          Find a Mentor
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="animate-floaty space-y-4">
+                      <div className="overflow-hidden rounded-[2rem] border border-white/30 border-brand bg-white/10 shadow-soft backdrop-blur-md">
+                        <div
+                          role="img"
+                          aria-label="GLA University logo"
+                          className="h-44 w-full bg-white/95 bg-contain bg-center bg-no-repeat sm:h-52"
+                          style={{ backgroundImage: "url('gla-logo.webp')" }}
+                        ></div>
+                        <div className="px-5 py-4 text-white/90">
+                          <p className="text-sm font-semibold uppercase tracking-[0.18em]">GLA University</p>
+                          <p className="mt-1 text-sm text-white/80">A student-first support network across campus life.</p>
+                        </div>
+                      </div>
+
+                      <div className="glass card-hover rounded-[2rem] border border-white/30 p-6 shadow-soft">
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          {[
+                            { title: 'Support Queue', value: '24/7', note: 'Always on help desk' },
+                            { title: 'Mentors Available', value: '100+', note: 'Guidance specialists' },
+                            { title: 'Resolved Cases', value: '95%', note: 'Complaint resolution rate' },
+                            { title: 'Student Reach', value: '1500+', note: 'Learners supported' },
+                          ].map((item) => (
+                            <div key={item.title} className="rounded-3xl border border-slate-200/80 bg-white/80 p-4 shadow-sm">
+                              <p className="text-sm font-semibold text-slate-500">{item.title}</p>
+                              <div className="mt-2 text-3xl font-black tracking-tight text-slate-900">{item.value}</div>
+                              <p className="mt-2 text-sm text-slate-600">{item.note}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </section>
+
+            <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+              <SectionTitle
+                eyebrow="Quick Help"
+                title="Fast access to the help students need most"
+                description="Choose a support path in seconds with visually clear, accessible cards designed for student convenience."
+              />
+              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                {quickHelpItems.map((item, index) => (
+                  <article key={item.title} className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft animate-fadeUp" style={{ animationDelay: `${index * 70}ms` }}>
+                    <div className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-glow ${index % 2 === 0 ? 'bg-gradient-to-br from-campus-700 to-campus-400' : 'bg-gradient-to-br from-sky-500 to-cyan-400'}`}>
+                      <Icon name={item.icon} />
+                    </div>
+                    <h3 className="mt-5 text-lg font-bold text-slate-900">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section id="services" className="border-y border-slate-200/80 bg-white/70">
+              <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                <SectionTitle
+                  eyebrow="Services"
+                  title="A complete support system for campus life"
+                  description="Browse the core services designed to keep students informed, connected, and supported throughout the academic journey."
+                />
+                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                  {services.map((service) => (
+                    <article key={service} className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft">
+                      <div className="mb-4 inline-flex rounded-2xl bg-blue-50 p-3 text-campus-700">
+                        <Icon name="briefcase" />
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-900">{service}</h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">
+                        Designed with clear workflows, quick access, and a premium student experience in mind.
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+              <SectionTitle
+                eyebrow="Statistics"
+                title="Trusted by the campus community"
+                description="Track support impact with key metrics that highlight engagement and outcomes across the portal."
+              />
+              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="card-hover rounded-3xl border border-slate-200 bg-white p-6 shadow-soft">
+                    <div className="text-4xl font-black tracking-tight text-brand">{stat.value}</div>
+                    <p className="mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+              <SectionTitle
+                eyebrow="Latest Announcements"
+                title="Stay current with campus updates"
+                description="Important announcements are highlighted here so students never miss a workshop, placement drive, or internship opportunity."
+              />
+              <div className="grid gap-5 lg:grid-cols-2">
+                <div className="grid gap-4">
+                  {announcements.map((announcement) => (
+                    <div key={announcement} className="card-hover rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+                      <div className="flex items-start gap-4">
+                        <div className="rounded-2xl bg-campus-50 p-3">
+                          <Icon name="chat" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-slate-900">{announcement}</p>
+                          <p className="mt-1 text-sm text-slate-600">Posted recently with details available in the portal.</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <aside className="card-hover rounded-[2rem] border border-slate-200 brand-gradient p-8 text-white shadow-soft">
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/80">Quick Resources</p>
+                  <h3 className="mt-3 text-2xl font-black">Everything you need in one place</h3>
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    {resources.map((resource, index) => {
+                      const icons = ['calendar', 'portal', 'exam', 'scholarship'];
+                      return (
+                        <div key={resource} className="rounded-3xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
+                          <div className="flex items-center gap-3">
+                            <span className="rounded-2xl bg-white p-2 shadow-sm">
+                              <Icon name={icons[index]} />
+                            </span>
+                            <div>
+                              <p className="font-semibold text-white">{resource}</p>
+                              <p className="text-sm text-white/80">Open the latest campus information</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </aside>
+              </div>
+            </section>
+
+            <section id="fresher-zone" className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+              <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+                <div className="card-hover rounded-[2rem] border border-slate-200 bg-white p-8 shadow-soft">
+                  <SectionTitle
+                    eyebrow="Fresher Zone"
+                    title="A smoother start for every new student"
+                    description="A guided onboarding area helps new students discover people, places, and important support channels faster."
+                  />
+                  <ul className="space-y-3 text-sm text-slate-600">
+                    <li className="flex items-start gap-3"><span className="mt-1 h-2.5 w-2.5 rounded-full bg-campus-500"></span>Campus essentials, orientation links, and welcome support</li>
+                    <li className="flex items-start gap-3"><span className="mt-1 h-2.5 w-2.5 rounded-full bg-campus-500"></span>Mentor introductions and student community onboarding</li>
+                    <li className="flex items-start gap-3"><span className="mt-1 h-2.5 w-2.5 rounded-full bg-campus-500"></span>Clear steps to get help from the right team quickly</li>
+                  </ul>
+                </div>
+
+                <div id="forum" className="rounded-[2rem] border border-slate-200 bg-gradient-to-br from-slate-900 to-campus-800 p-8 text-white shadow-soft">
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/80">Community Banner</p>
+                  <div className="mt-5 grid gap-8 md:grid-cols-[0.85fr_1.15fr] md:items-center">
+                    <div className="mx-auto max-w-sm">
+                      <svg viewBox="0 0 520 420" className="w-full drop-shadow-2xl" aria-hidden="true">
+                        <defs>
+                          <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stopColor="#dbeafe" />
+                            <stop offset="100%" stopColor="#60a5fa" />
+                          </linearGradient>
+                          <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stopColor="#ffd6bf" />
+                            <stop offset="100%" stopColor="#f6b89a" />
+                          </linearGradient>
+                        </defs>
+                        <rect x="28" y="28" width="464" height="364" rx="40" fill="url(#bgGrad)" opacity="0.18" />
+                        <circle cx="385" cy="90" r="58" fill="#93c5fd" opacity="0.5" />
+                        <circle cx="125" cy="120" r="34" fill="#bfdbfe" opacity="0.6" />
+                        <path d="M100 300c38-56 88-82 160-82s120 26 160 82v34H100z" fill="#e0f2fe" opacity="0.75" />
+                        <rect x="190" y="150" width="140" height="110" rx="28" fill="#fff" />
+                        <circle cx="260" cy="126" r="28" fill="url(#skin)" />
+                        <path d="M225 212c10-25 33-39 35-39s25 14 35 39" fill="#dbeafe" />
+                        <path d="M235 168c0-13 11-24 25-24h0c14 0 25 11 25 24" fill="none" stroke="#1d4ed8" strokeWidth="10" strokeLinecap="round" />
+                        <rect x="215" y="228" width="92" height="44" rx="20" fill="#1d4ed8" />
+                        <rect x="170" y="230" width="52" height="18" rx="9" fill="#bfdbfe" />
+                        <rect x="298" y="230" width="52" height="18" rx="9" fill="#bfdbfe" />
+                        <circle cx="248" cy="125" r="4" fill="#1e293b" />
+                        <circle cx="272" cy="125" r="4" fill="#1e293b" />
+                        <path d="M248 138c8 8 16 8 24 0" stroke="#1e293b" strokeWidth="4" strokeLinecap="round" fill="none" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-black leading-tight sm:text-4xl">You are not alone. We are here for you.</h3>
+                      <p className="mt-4 text-white/80">
+                        CampusCare brings together peer support, mentors, and student services so everyone can feel connected and supported.
+                      </p>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <a href="#contact" className="focus-ring rounded-2xl bg-white px-5 py-3 font-bold text-campus-700 transition hover:-translate-y-0.5">
+                          Join the Community
+                        </a>
+                        <a href="#resources" className="focus-ring rounded-2xl border border-white/20 bg-white/10 px-5 py-3 font-bold text-white backdrop-blur-md transition hover:bg-white/15">
+                          Explore Resources
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="contact" className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+              <div className="grid gap-6 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-soft lg:grid-cols-3">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-campus-700">Contact Information</p>
+                  <h3 className="mt-3 text-2xl font-black text-slate-900">Reach the CampusCare team</h3>
+                  <p className="mt-4 text-slate-600">Need help, feedback, or partnership support? We&apos;re here to respond quickly and clearly.</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-[0.22em] text-slate-500">Quick Links</h4>
+                  <ul className="mt-4 space-y-3 text-slate-700">
+                    <li><a className="focus-ring rounded-lg text-slate-700 hover:text-campus-700" href="#services">Services</a></li>
+                    <li><a className="focus-ring rounded-lg text-slate-700 hover:text-campus-700" href="#resources">Resources</a></li>
+                    <li><a className="focus-ring rounded-lg text-slate-700 hover:text-campus-700" href="#forum">Forum</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-[0.22em] text-slate-500">Social Media</h4>
+                  <div className="mt-4 flex gap-3" aria-label="Social media icons">
+                    {['f', 'x', 'in'].map((item) => (
+                      <a key={item} href="#" className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 font-bold text-slate-600 transition hover:border-campus-200 hover:text-campus-700" aria-label={`Social link ${item}`}>
+                        {item}
+                      </a>
+                    ))}
+                  </div>
+                  <p className="mt-4 text-sm text-slate-600">support@campuscare.edu • +1 (555) 012-3456</p>
+                </div>
+              </div>
+            </section>
+          </main>
+
+          <footer className="border-t border-slate-200/80 bg-white/80">
+            <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-slate-600 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+              <p>© {currentYear} CampusCare. All rights reserved.</p>
+              <p>Built for a modern, accessible, student-first support experience.</p>
+            </div>
+          </footer>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+  <script>
+    // Auto-sample dominant colors from the supplied GLA logo and apply them to CSS variables.
+    // Runs in the browser when the page is opened locally.
+    (function sampleLogoColors() {
+      try {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = 'gla-logo.webp';
+        img.addEventListener('load', () => {
+          try {
+            const w = 40; const h = 40;
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const data = ctx.getImageData(0, 0, w, h).data;
+
+            // Reduce color precision to build a small histogram (4 bits per channel)
+            const counts = Object.create(null);
+            for (let i = 0; i < data.length; i += 4) {
+              const r = data[i] >> 4;
+              const g = data[i + 1] >> 4;
+              const b = data[i + 2] >> 4;
+              const key = (r << 8) | (g << 4) | b;
+              counts[key] = (counts[key] || 0) + 1;
+            }
+
+            // Sort buckets by frequency
+            const buckets = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+
+            const bucketToHex = (k) => {
+              const ki = Number(k) || 0;
+              const r = ((ki >> 8) & 0xf) << 4;
+              const g = ((ki >> 4) & 0xf) << 4;
+              const b = (ki & 0xf) << 4;
+              const toHex = (n) => n.toString(16).padStart(2, '0');
+              return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+            };
+
+            const primary = bucketToHex(buckets[0]);
+            const secondary = bucketToHex(buckets[1] || buckets[0]);
+            const accent = bucketToHex(buckets[2] || buckets[1] || buckets[0]);
+
+            const root = document.documentElement;
+            root.style.setProperty('--brand-primary', primary);
+            root.style.setProperty('--brand-secondary', secondary);
+            root.style.setProperty('--brand-accent', accent);
+
+            console.info('CampusCare: applied sampled brand colors', primary, secondary, accent);
+          } catch (err) {
+            console.warn('CampusCare: color sampling failed', err);
+          }
+        });
+        img.addEventListener('error', () => console.warn('CampusCare: failed to load gla-logo.webp for sampling'));
+      } catch (e) {
+        console.warn('CampusCare: sampling script error', e);
+      }
+    })();
+  </script>
+</body>
+</html>
