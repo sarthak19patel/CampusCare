@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile • CampusCare</title>
+  <meta name="description" content="CampusCare user profile" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles/premium.css" />
+  <style>
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.10), transparent 38%),
+        radial-gradient(circle at 88% 12%, rgba(124, 58, 237, 0.08), transparent 40%),
+        linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
+      color: #0f172a;
+    }
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.45);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-900">
+  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
+      <a href="campuscarehome.html#home" class="focus-ring flex items-center gap-3 rounded-2xl px-1 py-1" aria-label="Back to CampusCare home">
+        <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white text-white shadow-lg">
+          <img src="assets/campuscare-logo-v2.jpg" alt="CampusCare logo" class="h-full w-full object-contain" />
+        </div>
+        <div>
+          <div class="text-lg font-extrabold tracking-tight text-slate-900">CampusCare</div>
+          <div class="text-xs font-medium text-slate-500">My Profile</div>
+        </div>
+      </a>
+
+      <button id="logoutBtn" type="button"
+        class="focus-ring inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50">
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-lg backdrop-blur-md sm:p-10">
+      <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">Profile</p>
+      <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900">Your account</h1>
+      <p class="mt-2 text-sm text-slate-600">This profile is shown after you log in.</p>
+
+      <div class="mt-8 grid gap-4">
+        <div class="rounded-3xl border border-slate-200 bg-white p-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Full name</p>
+          <p id="profileName" class="mt-2 text-base font-bold text-slate-900">—</p>
+        </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Email</p>
+          <p id="profileEmail" class="mt-2 text-base font-bold text-slate-900 break-all">—</p>
+        </div>
+      </div>
+
+      <a href="campuscarehome.html#home"
+        class="focus-ring mt-8 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-4 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5">
+        Back to Home
+      </a>
+    </div>
+  </main>
+
+  <script>
+    function getUser() {
+      try {
+        const raw = localStorage.getItem('loggedInUser');
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    const user = getUser();
+    if (!user) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('profileName').textContent = user.name || 'Student';
+      document.getElementById('profileEmail').textContent = user.email || '—';
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      try { localStorage.removeItem('loggedInUser'); } catch (e) {}
+      window.location.href = 'campuscarehome.html';
+    });
+  </script>
+</body>
+</html>

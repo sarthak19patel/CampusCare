@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusCare • Search</title>
+  <meta name="description" content="Search across CampusCare sections: Home, Services, Fresher Zone, Resources, Forum, and Contact." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles/premium.css" />
+  <style>
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.10), transparent 38%),
+        radial-gradient(circle at 88% 12%, rgba(124, 58, 237, 0.08), transparent 40%),
+        linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
+      color: #0f172a;
+    }
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.45);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-900">
+  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
+      <a id="homeLink" href="campuscarehome.html#home" class="focus-ring flex items-center gap-3 rounded-2xl px-1 py-1" aria-label="Back to CampusCare home">
+        <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-lg">
+          <img src="assets/campuscare-logo-v2.jpg" alt="CampusCare logo" class="h-full w-full object-contain" />
+        </div>
+        <div>
+          <div class="text-lg font-extrabold tracking-tight text-slate-900">CampusCare</div>
+          <div class="text-xs font-medium text-slate-500">Search across sections</div>
+        </div>
+      </a>
+
+      <a id="openHomeBtn" href="campuscarehome.html#home" target="_blank" rel="noopener noreferrer"
+         class="focus-ring inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5">
+        Open Home
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-lg backdrop-blur-md sm:p-8">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">Search</p>
+          <h1 class="mt-2 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">Find anything on CampusCare</h1>
+          <p class="mt-2 max-w-2xl text-sm text-slate-600">Search in <span class="font-semibold">All</span> sections, or switch tabs to narrow results.</p>
+        </div>
+        <div class="text-sm text-slate-600">
+          <span class="font-semibold" id="resultsCount">0</span> results
+        </div>
+      </div>
+
+      <div class="mt-6 grid gap-4">
+        <label class="sr-only" for="searchInput">Search</label>
+        <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+          <svg class="h-5 w-5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="searchInput" class="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
+            type="search" placeholder="Search services, resources, announcements, and more…" autocomplete="off" />
+          <button id="clearBtn" type="button" class="focus-ring hidden rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-100">Clear</button>
+        </div>
+
+        <div class="flex flex-wrap gap-2" id="tabs" aria-label="Search filters"></div>
+      </div>
+
+      <div class="mt-6 grid gap-4" id="results"></div>
+
+      <p class="mt-8 text-xs text-slate-500">
+        Tip: This search opens in a new tab from the home page. Each result opens the relevant section in a separate tab, so you never lose your search.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const sourceParam = params.get('source') || 'campuscarehome.html';
+    const sourceBase = (sourceParam || 'campuscarehome.html').split('#')[0];
+
+    const homeLink = document.getElementById('homeLink');
+    const openHomeBtn = document.getElementById('openHomeBtn');
+    homeLink.href = `${sourceBase}#home`;
+    openHomeBtn.href = `${sourceBase}#home`;
+
+    const SECTIONS = [
+      { id: 'all', label: 'All' },
+      { id: 'home', label: 'Home' },
+      { id: 'services', label: 'Services' },
+      { id: 'fresher', label: 'Fresher Zone' },
+      { id: 'resources', label: 'Resources' },
+      { id: 'forum', label: 'Forum' },
+      { id: 'contact', label: 'Contact' },
+    ];
+
+    const TAB_STYLES = {
+      all: { base: 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50', active: 'border-slate-300 bg-slate-50 text-slate-900' },
+      home: { base: 'border-sky-200 bg-sky-50 text-sky-800 hover:bg-sky-100/60', active: 'border-sky-300 bg-sky-100 text-sky-900' },
+      services: { base: 'border-blue-200 bg-blue-50 text-blue-800 hover:bg-blue-100/60', active: 'border-blue-300 bg-blue-100 text-blue-900' },
+      fresher: { base: 'border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100/60', active: 'border-amber-300 bg-amber-100 text-amber-900' },
+      resources: { base: 'border-violet-200 bg-violet-50 text-violet-800 hover:bg-violet-100/60', active: 'border-violet-300 bg-violet-100 text-violet-900' },
+      forum: { base: 'border-cyan-200 bg-cyan-50 text-cyan-800 hover:bg-cyan-100/60', active: 'border-cyan-300 bg-cyan-100 text-cyan-900' },
+      contact: { base: 'border-rose-200 bg-rose-50 text-rose-800 hover:bg-rose-100/60', active: 'border-rose-300 bg-rose-100 text-rose-900' },
+    };
+
+    const INDEX = [
+      // Home / Quick Help
+      { section: 'home', title: 'Career Guidance', description: 'Plan your next step with career advisors and industry-ready guidance.', href: 'service.html?topic=Career%20Guidance' },
+      { section: 'home', title: 'Mental Health Support', description: 'Find a safe, supportive space for wellbeing and emotional care.', href: 'service.html?topic=Mental%20Health%20Support' },
+      { section: 'home', title: 'Raise a Complaint', description: 'Submit issues quickly and track resolution with transparency.', href: 'service.html?topic=Raise%20a%20Complaint' },
+      { section: 'home', title: 'Fresher Help Center', description: 'Get started on campus with onboarding, tips, and essential links.', href: 'service.html?topic=Fresher%20Help%20Center' },
+      { section: 'home', title: 'Mentor Connect', description: 'Join with mentors for academic, personal, and career support.', href: 'service.html?topic=Mentor%20Connect' },
+      { section: 'home', title: 'Emergency Help', description: 'Reach urgent support channels when you need immediate assistance.', href: 'service.html?topic=Emergency%20Help' },
+
+      // Services
+      { section: 'services', title: 'Career Guidance', description: 'Career planning, resume workshops, and interview readiness.', href: 'service.html?topic=Career%20Guidance' },
+      { section: 'services', title: 'Mental Health Support', description: 'Wellbeing support and counseling resources.', href: 'service.html?topic=Mental%20Health%20Support' },
+      { section: 'services', title: 'Complaint Management', description: 'Submit and track issues transparently.', href: 'service.html?topic=Complaint%20Management' },
+      { section: 'services', title: 'Fresher Help Center', description: 'Onboarding for new students.', href: 'service.html?topic=Fresher%20Help%20Center' },
+      { section: 'services', title: 'Mentor Connect', description: 'Connect with mentors for academic and career guidance.', href: 'service.html?topic=Mentor%20Connect' },
+      { section: 'services', title: 'Student Community Forum', description: 'Ask questions and get support from peers.', href: 'service.html?topic=Student%20Community%20Forum' },
+
+      // Fresher Zone
+      { section: 'fresher', title: 'Fresher Zone', description: 'A guided onboarding area to help new students start smoothly.', href: '#fresher-zone' },
+      { section: 'fresher', title: 'Campus essentials', description: 'Orientation links and welcome support.', href: '#fresher-zone' },
+      { section: 'fresher', title: 'Mentor introductions', description: 'Meet mentors and join the student community.', href: '#fresher-zone' },
+      { section: 'fresher', title: 'Get help faster', description: 'Clear steps to reach the right team quickly.', href: '#fresher-zone' },
+
+      // Resources
+      { section: 'resources', title: 'Academic Calendar', description: 'Key academic dates and schedules.', href: '#resources' },
+      { section: 'resources', title: 'Placement Portal', description: 'Placement drives, opportunities, and applications.', href: '#resources' },
+      { section: 'resources', title: 'Exam Timetable', description: 'Exam schedules and updates.', href: '#resources' },
+      { section: 'resources', title: 'Scholarship Information', description: 'Scholarship details and eligibility info.', href: '#resources' },
+
+      // Forum
+      { section: 'forum', title: 'Community', description: 'Join the community and connect with peers and mentors.', href: '#forum' },
+      { section: 'forum', title: 'Raise a Complaint', description: 'Report issues and get them resolved.', href: 'service.html?topic=Raise%20a%20Complaint' },
+      { section: 'forum', title: 'Latest Announcements', description: 'Stay current with campus updates and workshops.', href: '#home' },
+
+      // Contact
+      { section: 'contact', title: 'Contact CampusCare', description: 'Need help, feedback, or partnership support? Reach the team.', href: '#contact' },
+      { section: 'contact', title: 'Support Email', description: 'support@campuscare.edu', href: '#contact' },
+      { section: 'contact', title: 'Support Phone', description: '+1 (555) 012-3456', href: '#contact' },
+    ];
+
+    const tabsEl = document.getElementById('tabs');
+    const resultsEl = document.getElementById('results');
+    const resultsCountEl = document.getElementById('resultsCount');
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+
+    function fullUrl(href) {
+      if (!href) return `${sourceBase}#home`;
+      if (href.startsWith('#')) return `${sourceBase}${href}`;
+      return href;
+    }
+
+    function normalize(s) {
+      return (s || '').toString().toLowerCase().trim();
+    }
+
+    let activeSection = params.get('section') || 'all';
+    if (!SECTIONS.some(s => s.id === activeSection)) activeSection = 'all';
+
+    function setActiveSection(id) {
+      activeSection = id;
+      const nextParams = new URLSearchParams(location.search);
+      nextParams.set('section', id);
+      history.replaceState({}, '', `${location.pathname}?${nextParams.toString()}`);
+      renderTabs();
+      renderResults();
+    }
+
+    function renderTabs() {
+      tabsEl.innerHTML = '';
+      for (const s of SECTIONS) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        const styles = TAB_STYLES[s.id] || TAB_STYLES.all;
+        btn.className =
+          'focus-ring rounded-2xl border px-4 py-2 text-sm font-semibold transition ' +
+          (s.id === activeSection ? styles.active : styles.base);
+        btn.textContent = s.label;
+        btn.addEventListener('click', () => setActiveSection(s.id));
+        tabsEl.appendChild(btn);
+      }
+    }
+
+    function matchesQuery(item, q) {
+      if (!q) return true;
+      const haystack = normalize(`${item.title} ${item.description} ${item.section}`);
+      return haystack.includes(q);
+    }
+
+    function renderResults() {
+      const q = normalize(searchInput.value);
+      clearBtn.classList.toggle('hidden', !q);
+
+      const filtered = INDEX
+        .filter(item => (activeSection === 'all' ? true : item.section === activeSection))
+        .filter(item => matchesQuery(item, q));
+
+      resultsCountEl.textContent = filtered.length.toString();
+      resultsEl.innerHTML = '';
+
+      if (filtered.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-600';
+        empty.textContent = 'No results. Try a different keyword or switch to “All”.';
+        resultsEl.appendChild(empty);
+        return;
+      }
+
+      for (const item of filtered) {
+        const card = document.createElement('article');
+        card.className = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md';
+
+        const top = document.createElement('div');
+        top.className = 'flex flex-wrap items-center justify-between gap-3';
+
+        const title = document.createElement('h2');
+        title.className = 'text-base font-extrabold text-slate-900';
+        title.textContent = item.title;
+
+        const badge = document.createElement('span');
+        badge.className = 'rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600';
+        const sectionLabel = SECTIONS.find(s => s.id === item.section)?.label || item.section;
+        badge.textContent = sectionLabel;
+
+        top.appendChild(title);
+        top.appendChild(badge);
+
+        const desc = document.createElement('p');
+        desc.className = 'mt-3 text-sm leading-6 text-slate-600';
+        desc.textContent = item.description || '';
+
+        const link = document.createElement('a');
+        link.className = 'focus-ring mt-4 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5';
+        link.textContent = 'Open section';
+        link.href = fullUrl(item.href);
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        card.appendChild(top);
+        card.appendChild(desc);
+        card.appendChild(link);
+        resultsEl.appendChild(card);
+      }
+    }
+
+    renderTabs();
+    renderResults();
+
+    searchInput.value = params.get('q') || '';
+    renderResults();
+
+    searchInput.addEventListener('input', () => {
+      const nextParams = new URLSearchParams(location.search);
+      nextParams.set('q', searchInput.value);
+      history.replaceState({}, '', `${location.pathname}?${nextParams.toString()}`);
+      renderResults();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      const nextParams = new URLSearchParams(location.search);
+      nextParams.delete('q');
+      history.replaceState({}, '', `${location.pathname}?${nextParams.toString()}`);
+      searchInput.focus();
+      renderResults();
+    });
+  </script>
+</body>
+</html>

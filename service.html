@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusCare • Service</title>
+  <meta name="description" content="CampusCare service details" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles/premium.css" />
+  <style>
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.10), transparent 38%),
+        radial-gradient(circle at 88% 12%, rgba(124, 58, 237, 0.08), transparent 40%),
+        linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
+      color: #0f172a;
+    }
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.45);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-900">
+  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
+      <a href="campuscarehome.html#home" class="focus-ring flex items-center gap-3 rounded-2xl px-1 py-1" aria-label="Back to CampusCare home">
+        <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-lg">
+          <img src="assets/campuscare-logo-v2.jpg" alt="CampusCare logo" class="h-full w-full object-contain" />
+        </div>
+        <div>
+          <div class="text-lg font-extrabold tracking-tight text-slate-900">CampusCare</div>
+          <div class="text-xs font-medium text-slate-500">Service</div>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2">
+        <a id="profileLink" href="login.html"
+          class="focus-ring inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50">
+          Login
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+      <section class="rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-lg backdrop-blur-md sm:p-10">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em]" id="eyebrow">CampusCare service</p>
+        <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900" id="title">Service</h1>
+        <p class="mt-4 max-w-3xl text-sm leading-7 text-slate-600" id="desc"></p>
+
+        <div class="mt-8 grid gap-3 sm:grid-cols-2" id="highlights"></div>
+
+        <div class="mt-8">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">Tips</p>
+          <div class="mt-4 grid gap-3 sm:grid-cols-2" id="tips"></div>
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a id="browseBtn" href="campuscarehome.html#services"
+            class="focus-ring inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-4 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5">
+            Browse all services
+          </a>
+          <a href="search.html"
+            class="focus-ring inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50">
+            Search
+          </a>
+        </div>
+      </section>
+
+      <aside class="rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-lg backdrop-blur-md sm:p-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">Request help</p>
+        <h2 class="mt-2 text-2xl font-black tracking-tight text-slate-900">Send a request</h2>
+        <p class="mt-2 text-sm text-slate-600">This is a simple demo form (no backend). It saves locally so you can see your submission.</p>
+
+        <form id="helpForm" class="mt-6 grid gap-4">
+          <div>
+            <label class="text-sm font-semibold text-slate-700" for="studentName">Name</label>
+            <input id="studentName" class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200" type="text" placeholder="Your name" required />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-slate-700" for="studentEmail">Email</label>
+            <input id="studentEmail" class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200" type="email" placeholder="you@university.edu" required />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-slate-700" for="message">Message</label>
+            <textarea id="message" class="mt-2 min-h-[120px] w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200" placeholder="Tell us what you need…" required></textarea>
+          </div>
+          <button id="submitBtn" class="focus-ring inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-4 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5" type="submit">
+            Submit request
+          </button>
+        </form>
+
+        <div id="savedNote" class="mt-5 hidden rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
+          Saved locally. (Demo)
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const SERVICES = {
+      "Career Guidance": {
+        eyebrow: "Career",
+        description: "Plan your career path with resume reviews, internship guidance, and interview preparation support.",
+        highlights: ["Resume review sessions", "Interview practice", "Internship & placement planning", "Career roadmap guidance"],
+        tips: ["Update your resume every 2 weeks", "Practice 2 common interview questions daily", "Build 2 strong projects for your portfolio", "Connect with seniors/mentors for feedback"],
+        theme: { accent: "blue", eyebrow: "text-blue-700", border: "border-blue-200", left: "border-l-blue-500", toBg: "to-blue-50", btn: "from-blue-600 to-violet-600" }
+      },
+      "Mental Health Support": {
+        eyebrow: "Wellbeing",
+        description: "Access supportive resources and guidance for stress, anxiety, and emotional wellbeing.",
+        highlights: ["Confidential support", "Stress management tools", "Peer support pathways", "Professional counseling referrals"],
+        tips: ["Try 4-7-8 breathing for 2 minutes", "Sleep 7–8 hours and keep a routine", "Take a short walk / sunlight break daily", "Talk to a trusted friend, mentor, or counselor"],
+        theme: { accent: "emerald", eyebrow: "text-emerald-700", border: "border-emerald-200", left: "border-l-emerald-500", toBg: "to-emerald-50", btn: "from-emerald-600 to-teal-500" }
+      },
+      "Raise a Complaint": {
+        eyebrow: "Support",
+        description: "Submit issues quickly and track resolution with transparency.",
+        highlights: ["Fast submission", "Clear tracking", "Resolution updates", "Fair escalation path"],
+        tips: ["Explain the issue clearly in 2–3 lines", "Attach evidence (screenshots) if possible", "Mention date/time/location for faster action", "Check status updates regularly"],
+        theme: { accent: "rose", eyebrow: "text-rose-700", border: "border-rose-200", left: "border-l-rose-500", toBg: "to-rose-50", btn: "from-rose-600 to-pink-500" }
+      },
+      "Complaint Management": {
+        eyebrow: "Support",
+        description: "A structured workflow to report, monitor, and resolve complaints transparently.",
+        highlights: ["Ticket workflow", "Status updates", "Escalation rules", "Resolution tracking"],
+        tips: ["Use one ticket per issue (avoid mixing)", "Keep your language polite & clear", "Follow escalation only after the due time", "Save the ticket ID for reference"],
+        theme: { accent: "rose", eyebrow: "text-rose-700", border: "border-rose-200", left: "border-l-rose-500", toBg: "to-rose-50", btn: "from-rose-600 to-pink-500" }
+      },
+      "Fresher Help Center": {
+        eyebrow: "Freshers",
+        description: "A guided onboarding hub for new students: campus essentials, orientation, and first-week support.",
+        highlights: ["Orientation links", "Campus essentials checklist", "Support contacts", "Mentor introductions"],
+        tips: ["Save important contacts on day 1", "Visit the admin office once for basics", "Join a club to make friends quickly", "Ask seniors before deadlines"],
+        theme: { accent: "amber", eyebrow: "text-amber-700", border: "border-amber-200", left: "border-l-amber-500", toBg: "to-amber-50", btn: "from-amber-600 to-orange-500" }
+      },
+      "Mentor Connect": {
+        eyebrow: "Mentoring",
+        description: "Connect with mentors for academic, personal, and career guidance.",
+        highlights: ["Mentor matching", "1:1 guidance", "Goal planning", "Regular check-ins"],
+        tips: ["Write your goals before the session", "Share progress weekly (small updates)", "Ask for actionable feedback", "Keep a simple learning journal"],
+        theme: { accent: "violet", eyebrow: "text-violet-700", border: "border-violet-200", left: "border-l-violet-500", toBg: "to-violet-50", btn: "from-violet-600 to-fuchsia-500" }
+      },
+      "Student Community Forum": {
+        eyebrow: "Community",
+        description: "Ask questions, share updates, and get support from peers and mentors.",
+        highlights: ["Ask & answer", "Peer support", "Mentor presence", "Community updates"],
+        tips: ["Search before posting (avoid duplicates)", "Use clear titles (topic + semester)", "Be respectful and helpful", "Share solutions after you find them"],
+        theme: { accent: "cyan", eyebrow: "text-cyan-700", border: "border-cyan-200", left: "border-l-cyan-500", toBg: "to-cyan-50", btn: "from-cyan-600 to-sky-500" }
+      },
+      "Emergency Help": {
+        eyebrow: "Urgent",
+        description: "Quick access to urgent campus support channels when immediate help is needed.",
+        highlights: ["Emergency contacts", "Rapid response", "Safety guidance", "Help escalation"],
+        tips: ["Call the official campus number first", "Share your exact location", "Stay with a trusted person if possible", "Don’t delay—seek help early"],
+        theme: { accent: "red", eyebrow: "text-red-700", border: "border-red-200", left: "border-l-red-500", toBg: "to-red-50", btn: "from-red-600 to-rose-500" }
+      }
+    };
+
+    function getTopic() {
+      const params = new URLSearchParams(location.search);
+      const t = params.get('topic') || '';
+      return t.trim();
+    }
+
+    function getUser() {
+      try {
+        const raw = localStorage.getItem('loggedInUser');
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Profile link
+    const user = getUser();
+    const profileLink = document.getElementById('profileLink');
+    if (user) {
+      profileLink.href = 'profile.html';
+      profileLink.textContent = user.name ? user.name : 'Profile';
+    } else {
+      profileLink.href = 'login.html';
+      profileLink.textContent = 'Login';
+    }
+
+    // Render content
+    const topic = getTopic() || 'Career Guidance';
+    const data = SERVICES[topic] || {
+      eyebrow: "Service",
+      description: "Explore this CampusCare service and submit a help request.",
+      highlights: ["Guided support", "Clear process", "Student-first experience", "Fast access"],
+      tips: ["Use the search to find help quickly", "Keep messages clear and short", "Save important links for later", "Ask for help early"],
+      theme: { eyebrow: "text-blue-700", border: "border-blue-200", left: "border-l-blue-500", toBg: "to-blue-50", btn: "from-blue-600 to-violet-600" }
+    };
+
+    document.getElementById('title').textContent = topic;
+    document.getElementById('eyebrow').textContent = data.eyebrow;
+    document.getElementById('desc').textContent = data.description;
+
+    // Apply theme colors
+    const eyebrowEl = document.getElementById('eyebrow');
+    eyebrowEl.classList.add(data.theme.eyebrow || 'text-blue-700');
+    const mainSection = document.querySelector('main section');
+    if (mainSection && data.theme.border) mainSection.classList.add(data.theme.border);
+
+    const browseBtn = document.getElementById('browseBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnGradient = (data.theme.btn || 'from-blue-600 to-violet-600').split(' ');
+    if (browseBtn) {
+      browseBtn.classList.remove('from-blue-600', 'to-violet-600');
+      btnGradient.forEach((c) => browseBtn.classList.add(c));
+    }
+    if (submitBtn) {
+      submitBtn.classList.remove('from-blue-600', 'to-violet-600');
+      btnGradient.forEach((c) => submitBtn.classList.add(c));
+    }
+
+    const highlightsEl = document.getElementById('highlights');
+    highlightsEl.innerHTML = '';
+    for (const h of data.highlights) {
+      const card = document.createElement('div');
+      const left = data.theme.left || 'border-l-blue-500';
+      const toBg = data.theme.toBg || 'to-blue-50';
+      card.className = `rounded-3xl border border-slate-200 bg-gradient-to-br from-white ${toBg} p-5 shadow-sm border-l-4 ${left}`;
+      card.innerHTML = `
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Highlight</p>
+        <p class="mt-2 text-sm font-bold text-slate-900">${h}</p>
+      `;
+      highlightsEl.appendChild(card);
+    }
+
+    const tipsEl = document.getElementById('tips');
+    tipsEl.innerHTML = '';
+    for (const t of (data.tips || [])) {
+      const card = document.createElement('div');
+      const left = data.theme.left || 'border-l-blue-500';
+      const toBg = data.theme.toBg || 'to-blue-50';
+      card.className = `rounded-3xl border border-slate-200 bg-gradient-to-br from-white ${toBg} p-5 shadow-sm border-l-4 ${left}`;
+      card.innerHTML = `
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Tip</p>
+        <p class="mt-2 text-sm font-bold text-slate-900">${t}</p>
+      `;
+      tipsEl.appendChild(card);
+    }
+
+    // Prefill form with logged in user (if available)
+    if (user) {
+      const nameInput = document.getElementById('studentName');
+      const emailInput = document.getElementById('studentEmail');
+      if (nameInput && user.name) nameInput.value = user.name;
+      if (emailInput && user.email) emailInput.value = user.email;
+    }
+
+    // Demo-submit: save locally
+    const helpForm = document.getElementById('helpForm');
+    const savedNote = document.getElementById('savedNote');
+    helpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const payload = {
+        topic,
+        name: document.getElementById('studentName').value,
+        email: document.getElementById('studentEmail').value,
+        message: document.getElementById('message').value,
+        createdAt: new Date().toISOString()
+      };
+      try {
+        const key = 'campuscare_requests';
+        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        existing.unshift(payload);
+        localStorage.setItem(key, JSON.stringify(existing.slice(0, 50)));
+      } catch (e) {}
+      savedNote.classList.remove('hidden');
+      setTimeout(() => savedNote.classList.add('hidden'), 2500);
+      helpForm.reset();
+      if (user) {
+        const nameInput = document.getElementById('studentName');
+        const emailInput = document.getElementById('studentEmail');
+        if (nameInput && user.name) nameInput.value = user.name;
+        if (emailInput && user.email) emailInput.value = user.email;
+      }
+    });
+  </script>
+</body>
+</html>

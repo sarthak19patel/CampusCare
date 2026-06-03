@@ -17,6 +17,10 @@ document.getElementById("loginForm")
         email===savedUser.email &&
         password===savedUser.password
     ){
+        try {
+            localStorage.setItem("loggedInUser", JSON.stringify(savedUser));
+        } catch (e) {}
+
         const popup = document.getElementById("successPopup");
         popup.classList.add("is-visible");
         popup.setAttribute("aria-hidden", "false");

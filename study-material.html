@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusCare • Study Material</title>
+  <meta name="description" content="Study material: notes, exam material, PYQs and lab files." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles/premium.css" />
+  <style>
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.10), transparent 38%),
+        radial-gradient(circle at 88% 12%, rgba(124, 58, 237, 0.08), transparent 40%),
+        linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
+      color: #0f172a;
+    }
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.45);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-900">
+  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
+      <a href="campuscarehome.html#resources" class="focus-ring flex items-center gap-3 rounded-2xl px-1 py-1" aria-label="Back to CampusCare resources">
+        <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-lg">
+          <img src="assets/campuscare-logo-v2.jpg" alt="CampusCare logo" class="h-full w-full object-contain" />
+        </div>
+        <div>
+          <div class="text-lg font-extrabold tracking-tight text-slate-900">CampusCare</div>
+          <div class="text-xs font-medium text-slate-500">Study Material</div>
+        </div>
+      </a>
+
+      <a href="search.html"
+        class="focus-ring inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50">
+        Search
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-lg backdrop-blur-md sm:p-10">
+      <p id="eyebrow" class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">Resources</p>
+      <h1 id="pageTitle" class="mt-2 text-3xl font-black tracking-tight text-slate-900">Study Material</h1>
+      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+        Choose a category. (Demo page — you can add real PDFs/files later.)
+      </p>
+
+      <div class="mt-6 flex flex-wrap gap-2" id="tabs" aria-label="Study material categories"></div>
+
+      <div class="mt-6 flex flex-wrap gap-2" id="branchTabs" aria-label="Branches"></div>
+      <div class="mt-4 flex flex-wrap gap-2" id="yearTabs" aria-label="Years"></div>
+
+      <div class="mt-8 hidden" id="notesBranches">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">Branches</p>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="branchCards"></div>
+      </div>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2" id="items"></div>
+    </div>
+  </main>
+
+  <script>
+    const CATEGORIES = [
+      { id: 'Notes', label: 'Notes', theme: { tab: 'border-blue-200 bg-blue-50 text-blue-900 hover:bg-blue-100/60', active: 'border-blue-300 bg-blue-100 text-blue-950', eyebrow: 'text-blue-700', btn: 'from-blue-600 to-violet-600' } },
+      { id: 'Exam Material', label: 'Exam Material', theme: { tab: 'border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100/60', active: 'border-amber-300 bg-amber-100 text-amber-950', eyebrow: 'text-amber-700', btn: 'from-amber-600 to-orange-500' } },
+      { id: 'PYQs', label: 'PYQs', theme: { tab: 'border-violet-200 bg-violet-50 text-violet-900 hover:bg-violet-100/60', active: 'border-violet-300 bg-violet-100 text-violet-950', eyebrow: 'text-violet-700', btn: 'from-violet-600 to-fuchsia-500' } },
+      { id: 'Lab Files', label: 'Lab Files', theme: { tab: 'border-emerald-200 bg-emerald-50 text-emerald-900 hover:bg-emerald-100/60', active: 'border-emerald-300 bg-emerald-100 text-emerald-950', eyebrow: 'text-emerald-700', btn: 'from-emerald-600 to-teal-500' } },
+    ];
+
+    const BRANCHES = [
+      { id: 'ALL', label: 'All Branches' },
+      { id: 'CSE', label: 'CSE' },
+      { id: 'IT', label: 'IT' },
+      { id: 'ECE', label: 'ECE' },
+      { id: 'EEE', label: 'EEE' },
+      { id: 'ME', label: 'ME' },
+      { id: 'CE', label: 'CE' },
+      { id: 'AIDS', label: 'AI & DS' },
+    ];
+
+    const YEARS = [
+      { id: '1', label: '1st Year' },
+      { id: '2', label: '2nd Year' },
+      { id: '3', label: '3rd Year' },
+      { id: '4', label: '4th Year' },
+    ];
+
+    const params = new URLSearchParams(location.search);
+    let active = (params.get('type') || 'Notes').trim();
+    if (!CATEGORIES.some(c => c.id === active)) active = 'Notes';
+    let activeBranch = (params.get('branch') || 'ALL').trim().toUpperCase();
+    if (!BRANCHES.some(b => b.id === activeBranch)) activeBranch = 'ALL';
+    let activeYear = (params.get('year') || '1').trim();
+    if (!YEARS.some(y => y.id === activeYear)) activeYear = '1';
+
+    const tabsEl = document.getElementById('tabs');
+    const branchTabsEl = document.getElementById('branchTabs');
+    const yearTabsEl = document.getElementById('yearTabs');
+    const notesBranchesEl = document.getElementById('notesBranches');
+    const branchCardsEl = document.getElementById('branchCards');
+    const itemsEl = document.getElementById('items');
+    const eyebrowEl = document.getElementById('eyebrow');
+    const pageTitleEl = document.getElementById('pageTitle');
+
+    function setQuery(next) {
+      const nextParams = new URLSearchParams(location.search);
+      Object.keys(next).forEach((k) => nextParams.set(k, next[k]));
+      history.replaceState({}, '', `${location.pathname}?${nextParams.toString()}`);
+    }
+
+    function setActive(id) {
+      active = id;
+      setQuery({ type: id, branch: activeBranch, year: activeYear });
+      render();
+    }
+
+    function setBranch(id) {
+      activeBranch = id;
+      setQuery({ type: active, branch: activeBranch, year: activeYear });
+      render();
+      const itemsTop = itemsEl?.getBoundingClientRect?.().top ?? 0;
+      if (itemsTop && itemsTop < 0) window.scrollTo({ top: window.scrollY + itemsTop - 120, behavior: 'smooth' });
+    }
+
+    function setYear(id) {
+      activeYear = id;
+      setQuery({ type: active, branch: activeBranch, year: activeYear });
+      render();
+    }
+
+    function renderTabs() {
+      tabsEl.innerHTML = '';
+      for (const c of CATEGORIES) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'focus-ring rounded-2xl border px-4 py-2 text-sm font-semibold transition ' + (c.id === active ? c.theme.active : c.theme.tab);
+        btn.textContent = c.label;
+        btn.addEventListener('click', () => setActive(c.id));
+        tabsEl.appendChild(btn);
+      }
+    }
+
+    function renderBranchTabs() {
+      branchTabsEl.innerHTML = '';
+      for (const b of BRANCHES) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className =
+          'focus-ring rounded-2xl border px-4 py-2 text-sm font-semibold transition ' +
+          (b.id === activeBranch
+            ? 'border-slate-300 bg-slate-100 text-slate-900'
+            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50');
+        btn.textContent = b.label;
+        btn.addEventListener('click', () => setBranch(b.id));
+        branchTabsEl.appendChild(btn);
+      }
+    }
+
+    function renderYearTabs() {
+      yearTabsEl.innerHTML = '';
+      const theme = (CATEGORIES.find(c => c.id === active) || CATEGORIES[0]).theme;
+      for (const y of YEARS) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className =
+          'focus-ring rounded-2xl border px-4 py-2 text-sm font-semibold transition ' +
+          (y.id === activeYear ? theme.active : theme.tab);
+        btn.textContent = y.label;
+        btn.addEventListener('click', () => setYear(y.id));
+        yearTabsEl.appendChild(btn);
+      }
+    }
+
+    function renderBranchCardsIfNotes() {
+      const isNotes = active === 'Notes';
+      notesBranchesEl.classList.toggle('hidden', !isNotes);
+      if (!isNotes) return;
+
+      branchCardsEl.innerHTML = '';
+      const theme = (CATEGORIES.find(c => c.id === active) || CATEGORIES[0]).theme;
+      for (const b of BRANCHES.filter(x => x.id !== 'ALL')) {
+        const card = document.createElement('div');
+        card.className = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-sm';
+        card.innerHTML = `
+          <p class="text-base font-extrabold text-slate-900">${b.label}</p>
+          <p class="mt-2 text-sm text-slate-600">Get branch-wise notes and unit material.</p>
+          <button type="button" class="focus-ring mt-4 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r ${theme.btn} px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5">
+            Preparation
+          </button>
+        `;
+        card.querySelector('button').addEventListener('click', () => setBranch(b.id));
+        branchCardsEl.appendChild(card);
+      }
+    }
+
+    function getItems(category, branchId, yearId) {
+      const branchLabel = (BRANCHES.find(b => b.id === branchId) || BRANCHES[0]).label;
+      const yr = yearId;
+
+      const base = (name, desc) => ({ title: name, desc, action: 'Open' });
+
+      if (category === 'Notes') {
+        return [
+          base(`${branchLabel} • Year ${yr} • Unit-1 Notes (PDF)`, 'Quick summary + key formulas'),
+          base(`${branchLabel} • Year ${yr} • Unit-2 Notes (PDF)`, 'Important concepts and diagrams'),
+          base(`${branchLabel} • Year ${yr} • Short Notes (PDF)`, 'Last-minute revision sheet'),
+          base(`${branchLabel} • Year ${yr} • Class Handouts`, 'Lecture handouts and references'),
+        ];
+      }
+      if (category === 'Exam Material') {
+        return [
+          base(`${branchLabel} • Year ${yr} • Important Questions`, 'High probability questions list'),
+          base(`${branchLabel} • Year ${yr} • Revision Material`, 'Fast revision for final exam'),
+          base(`${branchLabel} • Year ${yr} • Sample Papers`, 'Model papers with solutions'),
+          base(`${branchLabel} • Year ${yr} • Syllabus + Pattern`, 'Marks distribution and blueprint'),
+        ];
+      }
+      if (category === 'PYQs') {
+        return [
+          base(`${branchLabel} • Year ${yr} • PYQ Paper 2025`, 'Previous year paper (2025)'),
+          base(`${branchLabel} • Year ${yr} • PYQ Paper 2024`, 'Previous year paper (2024)'),
+          base(`${branchLabel} • Year ${yr} • PYQ Paper 2023`, 'Previous year paper (2023)'),
+          base(`${branchLabel} • Year ${yr} • Solved PYQs`, 'Solutions and explanations'),
+        ];
+      }
+      // Lab Files
+      return [
+        base(`${branchLabel} • Year ${yr} • Lab Manual`, 'Experiments and instructions'),
+        base(`${branchLabel} • Year ${yr} • Experiment-1 File`, 'Procedure + observation + result'),
+        base(`${branchLabel} • Year ${yr} • Experiment-2 File`, 'Procedure + observation + result'),
+        base(`${branchLabel} • Year ${yr} • Viva Questions`, 'Common viva Q/A'),
+      ];
+    }
+
+    function renderItems() {
+      itemsEl.innerHTML = '';
+      const list = getItems(active, activeBranch, activeYear) || [];
+      if (!list.length) {
+        const empty = document.createElement('div');
+        empty.className = 'rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-600 sm:col-span-2';
+        empty.textContent = 'No items yet.';
+        itemsEl.appendChild(empty);
+        return;
+      }
+
+      for (const item of list) {
+        const theme = (CATEGORIES.find(c => c.id === active) || CATEGORIES[0]).theme;
+        const card = document.createElement('div');
+        card.className = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-sm';
+        card.innerHTML = `
+          <p class="text-base font-extrabold text-slate-900">${item.title}</p>
+          <p class="mt-2 text-sm text-slate-600">${item.desc}</p>
+          <button type="button" class="focus-ring mt-4 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r ${theme.btn} px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5">
+            ${item.action}
+          </button>
+        `;
+        card.querySelector('button').addEventListener('click', () => {
+          alert('Demo only: add real PDF/file links here.');
+        });
+        itemsEl.appendChild(card);
+      }
+    }
+
+    function renderHeaderTheme() {
+      const theme = (CATEGORIES.find(c => c.id === active) || CATEGORIES[0]).theme;
+      eyebrowEl.className = 'text-sm font-semibold uppercase tracking-[0.22em] ' + theme.eyebrow;
+      const branchLabel = (BRANCHES.find(b => b.id === activeBranch) || BRANCHES[0]).label;
+      pageTitleEl.textContent = `${active} • ${branchLabel} • Year ${activeYear}`;
+    }
+
+    function render() {
+      renderHeaderTheme();
+      renderTabs();
+      renderBranchTabs();
+      renderYearTabs();
+      renderBranchCardsIfNotes();
+      renderItems();
+    }
+
+    render();
+  </script>
+</body>
+</html>
