@@ -135,7 +135,7 @@ The long-term goal is to transform CampusCare into a fully functional campus-wid
 CampusCare – Student Support Portal
 
 Live Demo:
-https://campus-care.vercel.app
+campus-care-sigma-pearl.vercel.app
 
 GitHub:
 https://github.com/sarthak19patel/CampusCare
