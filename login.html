@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login • CampusCare</title>
+    <link rel="stylesheet" href="styles/premium.css" />
+    <link rel="stylesheet" href="styles/auth.css" />
+</head>
+<body class="auth-page">
+
+<div id="successPopup" class="popup" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="popup-content">
+        <div class="checkmark" aria-hidden="true">✓</div>
+        <h2>Login Successful!</h2>
+        <p>Welcome back to CampusCare</p>
+    </div>
+</div>
+
+<a class="auth-back" href="campuscarehome.html">← Back to Home</a>
+
+<main class="auth-layout">
+    <section class="auth-card">
+        <div class="auth-brand">
+            <div class="auth-logo" aria-hidden="true">CC</div>
+            <div>
+                <h1 class="auth-title">Welcome back</h1>
+                <p class="auth-subtitle">Sign in to continue to CampusCare</p>
+            </div>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+
+            <div class="auth-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@university.edu" autocomplete="email" required />
+            </div>
+
+            <div class="auth-field">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
+            </div>
+
+            <div class="auth-actions">
+                <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+
+        </form>
+
+        <p class="auth-footer">
+            Don&apos;t have an account?
+            <a href="register.html">Sign Up</a>
+        </p>
+    </section>
+</main>
+
+<script src="login.js"></script>
+
+</body>
+</html>
