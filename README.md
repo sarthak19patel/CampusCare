@@ -131,6 +131,14 @@ Future versions may include:
 
 The long-term goal is to transform CampusCare into a fully functional campus-wide student support ecosystem that can be adopted by educational institutions.
 
+
+CampusCare – Student Support Portal
+
+Live Demo:
+https://campus-care.vercel.app
+
+GitHub:
+https://github.com/sarthak19patel/CampusCare
 ---
 
 ## 📂 Project Structure
