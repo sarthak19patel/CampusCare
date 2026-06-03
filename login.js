@@ -26,7 +26,7 @@ document.getElementById("loginForm")
         popup.setAttribute("aria-hidden", "false");
 
 setTimeout(() => {
-    window.location.href="campuscarehome.html";
+    window.location.href = "index.html";
 }, 2000);
     }
     else{
