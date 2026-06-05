@@ -73,7 +73,7 @@
       <aside class="rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-lg backdrop-blur-md sm:p-8">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">Request help</p>
         <h2 class="mt-2 text-2xl font-black tracking-tight text-slate-900">Send a request</h2>
-        <p class="mt-2 text-sm text-slate-600">This is a simple demo form (no backend). It saves locally so you can see your submission.</p>
+        <p class="mt-2 text-sm text-slate-600">Once the complaint is submitted, our team will review it and get back to you as soon as possible.</p>
 
         <form id="helpForm" class="mt-6 grid gap-4">
           <div>
@@ -255,33 +255,54 @@
     }
 
     // Demo-submit: save locally
-    const helpForm = document.getElementById('helpForm');
-    const savedNote = document.getElementById('savedNote');
-    helpForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const payload = {
-        topic,
-        name: document.getElementById('studentName').value,
-        email: document.getElementById('studentEmail').value,
-        message: document.getElementById('message').value,
-        createdAt: new Date().toISOString()
-      };
-      try {
-        const key = 'campuscare_requests';
-        const existing = JSON.parse(localStorage.getItem(key) || '[]');
-        existing.unshift(payload);
-        localStorage.setItem(key, JSON.stringify(existing.slice(0, 50)));
-      } catch (e) {}
+ // Submit request to backend
+const helpForm = document.getElementById('helpForm');
+const savedNote = document.getElementById('savedNote');
+
+helpForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    category: topic,
+    name: document.getElementById('studentName').value,
+    email: document.getElementById('studentEmail').value,
+    message: document.getElementById('message').value
+  };
+
+  try {
+    const response = await fetch('http://localhost:5000/api/requests/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      savedNote.textContent = 'Request submitted successfully.';
       savedNote.classList.remove('hidden');
+
       setTimeout(() => savedNote.classList.add('hidden'), 2500);
+
       helpForm.reset();
+
       if (user) {
         const nameInput = document.getElementById('studentName');
         const emailInput = document.getElementById('studentEmail');
         if (nameInput && user.name) nameInput.value = user.name;
         if (emailInput && user.email) emailInput.value = user.email;
       }
-    });
+    } else {
+      alert(data.message || 'Request submission failed');
+    }
+
+  } catch (error) {
+    alert('Backend server is not running');
+    console.error(error);
+  }
+});
   </script>
 </body>
 </html>

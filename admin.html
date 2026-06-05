@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusCare Admin Panel</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37,99,235,.12), transparent 35%),
+        radial-gradient(circle at 88% 12%, rgba(124,58,237,.10), transparent 35%),
+        linear-gradient(180deg,#ffffff 0%,#f3f4f6 100%);
+      color:#0f172a;
+      font-family: Inter, system-ui, Arial, sans-serif;
+    }
+
+    .brand-gradient{
+      background:linear-gradient(90deg,#2563eb,#7c3aed);
+    }
+
+    .card{
+      background:rgba(255,255,255,.85);
+      backdrop-filter:blur(18px);
+      border:1px solid #e2e8f0;
+      box-shadow:0 18px 45px rgba(37,99,235,.10);
+    }
+
+    select{
+      padding:8px 12px;
+      border-radius:14px;
+      border:1px solid #cbd5e1;
+      font-weight:700;
+      outline:none;
+      background:white;
+    }
+
+    td,th{
+      padding:16px;
+      text-align:left;
+      border-bottom:1px solid #e2e8f0;
+      font-size:14px;
+    }
+
+    th{
+      color:#475569;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      background:#f8fafc;
+    }
+
+    tr:hover{
+      background:#f8fafc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-3">
+        <div class="flex h-12 w-12 items-center justify-center rounded-2xl brand-gradient text-white font-black shadow-lg">
+          CC
+        </div>
+        <div>
+          <h1 class="text-xl font-black">CampusCare Admin</h1>
+          <p class="text-sm text-slate-500">Manage student requests</p>
+        </div>
+      </div>
+
+      <a href="index.html"
+         class="rounded-2xl brand-gradient px-5 py-3 text-sm font-bold text-white shadow-lg">
+        Open Home
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-6 py-10">
+
+    <section class="mb-8 grid gap-5 md:grid-cols-4">
+      <div class="card rounded-3xl p-6">
+        <p class="text-sm font-bold text-slate-500">Total Requests</p>
+        <h2 id="totalCount" class="mt-2 text-3xl font-black text-blue-600">0</h2>
+      </div>
+
+      <div class="card rounded-3xl p-6">
+        <p class="text-sm font-bold text-slate-500">Pending</p>
+        <h2 id="pendingCount" class="mt-2 text-3xl font-black text-orange-500">0</h2>
+      </div>
+
+      <div class="card rounded-3xl p-6">
+        <p class="text-sm font-bold text-slate-500">Resolved</p>
+        <h2 id="resolvedCount" class="mt-2 text-3xl font-black text-green-600">0</h2>
+      </div>
+
+      <div class="card rounded-3xl p-6">
+        <p class="text-sm font-bold text-slate-500">Rejected</p>
+        <h2 id="rejectedCount" class="mt-2 text-3xl font-black text-red-500">0</h2>
+      </div>
+    </section>
+
+    <section class="card overflow-hidden rounded-[2rem]">
+      <div class="flex flex-col gap-4 border-b border-slate-200 p-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 class="text-2xl font-black">Student Requests</h2>
+          <p class="mt-1 text-sm text-slate-500">
+            View and update all complaints, guidance requests, and support queries.
+          </p>
+        </div>
+
+        <button onclick="loadRequests()"
+          class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 shadow-sm hover:bg-slate-50">
+          Refresh
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Category</th>
+              <th>Message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="requestTableBody">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
