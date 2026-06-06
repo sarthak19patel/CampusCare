@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Login - CampusCare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-slate-100">
+
+  <div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
+    <h1 class="text-3xl font-black text-center text-slate-900">Admin Login</h1>
+    <p class="mt-2 text-center text-slate-500">Access CampusCare Admin Panel</p>
+
+    <form id="adminLoginForm" class="mt-8 grid gap-4">
+      <input id="adminEmail" type="email" placeholder="Admin Email"
+        class="rounded-2xl border p-4" required>
+
+      <input id="adminPassword" type="password" placeholder="Password"
+        class="rounded-2xl border p-4" required>
+
+      <button type="submit"
+        class="rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 p-4 font-bold text-white">
+        Login as Admin
+      </button>
+    </form>
+  </div>
+
+  <script src="admin-login.js"></script>
+</body>
+</html>

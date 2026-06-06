@@ -28,7 +28,7 @@ async function updateStatus(id, status) {
 async function loadRequests() {
     try {
         const response = await fetch(
-            "http://localhost:5000/api/requests/all"
+            "https://campuscare-p4eh.onrender.com/api/requests/all"
         );
 
         const requests = await response.json();

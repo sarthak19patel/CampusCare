@@ -60,7 +60,12 @@
 </head>
 
 <body>
-
+<script>
+  if (localStorage.getItem("adminLoggedIn") !== "true") {
+    alert("Please login as admin first");
+    window.location.href = "admin-login.html";
+  }
+</script>
   <header class="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
       <div class="flex items-center gap-3">
