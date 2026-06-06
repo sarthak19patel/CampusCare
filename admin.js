@@ -1,7 +1,7 @@
 async function updateStatus(id, status) {
     try {
         const response = await fetch(
-            `http://localhost:5000/api/requests/update-status/${id}`,
+            `https://campuscare-p4eh.onrender.com/api/requests/update-status/${id}`,
             {
                 method: "PUT",
                 headers: {
